@@ -1,0 +1,10 @@
+C:\Projects\MoqRepositorySample\TestProject1\bin\Debug\TestProject1.dll
+C:\Projects\MoqRepositorySample\TestProject1\bin\Debug\TestProject1.pdb
+C:\Projects\MoqRepositorySample\TestProject1\bin\Debug\Moq.dll
+C:\Projects\MoqRepositorySample\TestProject1\bin\Debug\MoqRepositorySample.dll
+C:\Projects\MoqRepositorySample\TestProject1\bin\Debug\MoqRepositorySample.pdb
+C:\Projects\MoqRepositorySample\TestProject1\bin\Debug\Moq.pdb
+C:\Projects\MoqRepositorySample\TestProject1\bin\Debug\Moq.xml
+C:\Projects\MoqRepositorySample\TestProject1\obj\Debug\ResolveAssemblyReference.cache
+C:\Projects\MoqRepositorySample\TestProject1\obj\Debug\TestProject1.dll
+C:\Projects\MoqRepositorySample\TestProject1\obj\Debug\TestProject1.pdb
