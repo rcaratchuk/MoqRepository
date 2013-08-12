@@ -1,5 +1,7 @@
 using System;
 using NUnit.Framework;
+using System.Linq;
+
 /*
 //using System.Collections.Generic;
 //using System.Linq;
@@ -16,6 +18,7 @@ namespace MoqRepositoryTests
 	}
 }
 */
+using System.Collections.Generic;
 
 namespace MoqRepositoryTests
 {
@@ -27,14 +30,22 @@ namespace MoqRepositoryTests
 	/// <summary>
 	/// Summary description for UnitTest1
 	/// </summary>
-	[TestClass]
+	[TestFixture] //defino como uma classe de teste no NUn
 	public class UnitTest1
 	{
+
+		public UnitTest1()
+		{
+
+		}
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public UnitTest1()
+		/// 
+		[SetUp]
+		public void SetupUnitTest1()
 		{
+			Console.WriteLine (	"entrei no setu");
 			// create some mock products to play with
 			IList<Device> devices = new List<Device>
 			{
@@ -47,13 +58,13 @@ namespace MoqRepositoryTests
 			Mock<IDeviceRepository> mockDeviceRepository = new Mock<IDeviceRepository>();
 
 			// Return all the products
-			mockDeviceRepository.Setup(mr => mr.FindAll()).Returns(device);
+			mockDeviceRepository.Setup(mr => mr.FindAll()).Returns(devices);
 
 			// return a product by Id
-			mockDeviceRepository.Setup(mr => mr.FindById(It.IsAny<int>())).Returns((int i) => device.Where(x => x.DeviceId == i).Single());
+			mockDeviceRepository.Setup(mr => mr.FindById(It.IsAny<int>())).Returns((int i) => devices.Where(x => x.DeviceId == i).Single());
 
 			// return a product by Name
-			mockDeviceRepository.Setup(mr => mr.FindByName(It.IsAny<string>())).Returns((string s) => device.Where(x => x.Name == s).Single());
+			mockDeviceRepository.Setup(mr => mr.FindByName(It.IsAny<string>())).Returns((string s) => devices.Where(x => x.Name == s).Single());
 
 			// Allows us to test saving a product
 			mockDeviceRepository.Setup(mr => mr.Save(It.IsAny<Product>())).Returns(
@@ -99,45 +110,46 @@ namespace MoqRepositoryTests
 		/// <summary>
 		/// Our Mock Products Repository for use in testing
 		/// </summary>
-		public readonly IDevicesRepository MockDeviceRepository;
+		public  IDeviceRepository MockDevicesRepository;
 
 		/// <summary>
 		/// Can we return a product By Id?
 		/// </summary>
-		[TestMethod]
+		[Test]
 		public void CanReturnDeviceById()
 		{
 			// Try finding a product by id
-			Product testProduct = this.MockDeviceRepository.FindById(2);
+			Console.WriteLine ("entrei no teste");
+			Device testDevice = this.MockDevicesRepository.FindById(2);
 
 			Assert.IsNotNull(testDevice); // Test if null
-			Assert.IsInstanceOfType(testDevice, typeof(Device)); // Test type
+
+			Assert.IsInstanceOf<Device>(testDevice); // Test type
 			Assert.AreEqual("Lâmpada 2", testDevice.Name); // Verify it is the right product
 		}
 
 		/// <summary>
 		/// Can we return a product By Name?
 		/// </summary>
-		[TestMethod]
+		[Test]
 		public void CanReturnProductByName()
 		{
 			// Try finding a product by Name
-			Device testDevice = this.MockDeviceRepository.FindByName("Lâmpada 1");
+			Device testDevice = this.MockDevicesRepository.FindByName("Lâmpada 1");
 
 			Assert.IsNotNull(testDevice); // Test if null
-			Assert.IsInstanceOfType(testDevice, typeof(Device)); // Test type
+			Assert.IsInstanceOf<Device>(testDevice); // Test type
 			Assert.AreEqual(3, testDevice.DeviceId); // Verify it is the right product
 		}
 
 		/// <summary>
 		/// Can we return all products?
 		/// </summary>
-		[TestMethod]
+		[Test]
 		public void CanReturnAllDevices()
 		{
 			// Try finding all products
 			IList<Device> testDevices = this.MockDevicesRepository.FindAll();
-
 			Assert.IsNotNull(testDevices); // Test if null
 			Assert.AreEqual(3, testDevices.Count); // Verify the correct Number
 		}
@@ -145,14 +157,14 @@ namespace MoqRepositoryTests
 		/// <summary>
 		/// Can we insert a new product?
 		/// </summary>
-		[TestMethod]
+		[Test]
 		public void CanInsertDevice()
 		{
 			// Create a new product, not I do not supply an id
 			Device newDevice = new Device
 			{ Name = "Pro C#", Description = "Short description here", Price = 39.99 };
 
-			int deviceCount = this.MockDeviceRepository.FindAll().Count;
+			int deviceCount = this.MockDevicesRepository.FindAll().Count;
 			Assert.AreEqual(3, deviceCount); // Verify the expected Number pre-insert
 
 			// try saving our new product
@@ -165,18 +177,18 @@ namespace MoqRepositoryTests
 			// verify that our new product has been saved
 			Device testDevice = this.MockDevicesRepository.FindByName("Pro C#");
 			Assert.IsNotNull(testDevice); // Test if null
-			Assert.IsInstanceOfType(testDevice, typeof(Device)); // Test type
+			Assert.IsInstanceOf<Device>(testDevice); // Test type
 			Assert.AreEqual(4, testDevice.DeviceId); // Verify it has the expected productid
 		}
 
 		/// <summary>
 		/// Can we update a prodict?
 		/// </summary>
-		[TestMethod]
+		[Test()]
 		public void CanUpdateDevice()
 		{
 			// Find a product by id
-			Product testDevice = this.MockDevicesRepository.FindById(1);
+			Device testDevice = this.MockDevicesRepository.FindById(1);
 
 			// Change one of its properties
 			testDevice.Name = "C# 3.5 Unleashed";
@@ -186,7 +198,10 @@ namespace MoqRepositoryTests
 			this.MockDevicesRepository.Save(testDevice);
 
 			// Verify the change
+		
+			Assert.AreEqual("C# 3.5 Unleashed", this.MockDevicesRepository.FindById(1).Name);
+
 		}
-			//Assert.AreEqual("C# 3.5 Unleashed", this.MockDevicesRepository.FindById(1).Name);
 	}
 }
+

@@ -34,9 +34,18 @@
     <Reference Include="nunit.framework">
       <Private>False</Private>
     </Reference>
+    <Reference Include="Moq">
+      <HintPath>..\MoqRepositorySample\Assemblies\Moq.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Test.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\MoqRepositorySample\MoqRepositorySample.csproj">
+      <Project>{763AB408-8FCC-4A32-BF06-8F037E2AD949}</Project>
+      <Name>MoqRepositorySample</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>
